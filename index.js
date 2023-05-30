@@ -8,7 +8,7 @@ const {booking} = require("./routes/bookingRoute")
 const app = express()
 app.use(express.json())
 
-app.get("/",(req,res)=>{
+app.get("/",(req,res)=>{ 
     res.send("Home Page")
 })
 
