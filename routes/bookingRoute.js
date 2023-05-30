@@ -6,9 +6,7 @@ const booking = express.Router()
 const { bookingtModel } = require("../models/bookingModel")
 const { FlightModel } = require("../models/flightModel")
 const { UserModel } = require("../models/userModel")
-const { authenticate } = require("../middlewares/authenticate")
 
-booking.use(authenticate)
 
 booking.get("/dashboard", async (req, res) => {
     try {

@@ -2,7 +2,6 @@ const express = require("express")
 
 
 const flight = express.Router()
-const { authenticate } = require("../middlewares/authenticate")
 
 const { FlightModel } = require("../models/flightModel")
 
@@ -34,7 +33,7 @@ flight.get("/flights/:id", async (req, res) => {
     }
 })
 
-flight.use(authenticate)
+
 
 flight.post("/flights", async (req, res) => {
     let { airline, flightNo, departure, arrival, departureTime, arrivalTime, seats, price } = req.body;
