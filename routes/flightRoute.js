@@ -52,15 +52,15 @@ flight.post("/flights", async (req, res) => {
 })
 
 flight.patch("/flights/:id", async (req, res) => {
-    let id = req.params.id;
+    let ID = req.params.id;
     let payload = req.body
     try {
-        let flight = await FlightModel.find({ _id: id })
+        let flight = await FlightModel.find({ _id: ID })
         if (flight.length === 0) {
-            res.send(`no flight available with given ${id}`)
+            res.send(`no flight available with given ${ID}`)
         } else {
-            await FlightModel.findByIdAndUpdate({ _id: id }, payload)
-            res.status(204).send(`flight with id ${id} got updated`)
+            await FlightModel.findByIdAndUpdate({ _id: ID }, payload)
+            res.status(201).send(`flight with id ${ID} got updated`)
         }
     } catch (error) {
         res.send(error)
