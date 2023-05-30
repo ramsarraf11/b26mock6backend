@@ -10,27 +10,41 @@ const user = express.Router()
 
 
 user.post("/register", async (req, res) => {
-    let data = req.body;
+    let { name, email, password } = req.body;
     try {
-        let new_data = new UserModel(data)
-        await new_data.save()
-        res.status(201).send("User Registered Successfully")
+        bcrypt.hash(password, 5, async function (err, hash) {
+            if (!err) {
+                let data = new UserModel({ name, email, password: hash })
+                await data.save()
+                res.status(200).send("New User Registered")
+            }else{
+                res.status(201).send({"err":"not working"})
+            }
+        });
     } catch (error) {
         console.log(error)
-    }
+    } 
 })
 
 user.post("/login", async (req, res) => {
-    let { name, password } = req.body
+    let { email, password } = req.body;
     try {
-        let new_data = await UserModel.find({ name })
-        if (new_data.length > 0) {
-            res.status(201).send("User LoggedIn Successfully")
-        } else {
-            res.status(404).send("User Not Found")
+        const user = await UserModel.find({email})
+        const hashedPass = user[0].password
+        if(user.length>0){
+            bcrypt.compare(password, hashedPass, function(err, result) {
+                if(result){
+                    const token = jwt.sign({ email }, process.env.secretKey, { expiresIn: "1h" })
+                    res.status(201).send({"msg":"loggin success","token":token})
+                }else{
+                    res.status(201).send({"err":"wrong password1"})
+                }
+            });
+        }else{
+            res.status(201).send({"err":"wrong password2"})
         }
     } catch (error) {
-        console.log(error)
+        res.status(201).send({"err":"wrong password3"})
     }
 
 })
