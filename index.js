@@ -1,6 +1,6 @@
 const express = require("express")
 require('dotenv').config()
-const { connection } = require("mongoose")
+const { connection } = require("./configs/db")
 const {user} = require("./routes/userRoute")
 const {flight} = require("./routes/flightRoute")
 const {booking} = require("./routes/bookingRoute")
